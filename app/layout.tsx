@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className={inter.className}>
         <Theme>
             <Navbar/>
-            <main className={'p-5'}>
+            <main className={'p-5 relative'}>
                 {children}
             </main>
         </Theme>
