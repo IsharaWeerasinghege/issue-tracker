@@ -21,24 +21,26 @@ function NewIssues() {
     });
     const router = useRouter();
 
+    const onSubmit = handleSubmit(async (data) => {
+        await axios.post('/api/issues', data)
+            .then(() => {
+                toast.success('Issue created successfully');
+
+                setTimeout(() => {
+                    router.push('/issues');
+                }, 1000);
+            }).catch((err) => {
+                toast.error('Failed to create issue');
+                console.log(err);
+            });
+    })
+
     // @ts-ignore
     return (
         <div>
             <form
                 className={'max-w-xl space-y-3 mx-auto'}
-                onSubmit={handleSubmit(async (data) => {
-                    await axios.post('/api/issues', data)
-                        .then(() => {
-                            toast.success('Issue created successfully');
-
-                            setTimeout(() => {
-                                router.push('/issues');
-                            }, 1000);
-                        }).catch((err) => {
-                            toast.error('Failed to create issue');
-                            console.log(err);
-                        });
-                })}
+                onSubmit={onSubmit}
             >
                 <TextField.Root>
                     <TextField.Input placeholder={'Title'} {...register('title')} />
@@ -54,7 +56,7 @@ function NewIssues() {
                         Create new issue
                     </Button>
 
-                    {isSubmitting && <Spinner />}
+                    {isSubmitting && <Spinner/>}
                 </div>
 
             </form>
