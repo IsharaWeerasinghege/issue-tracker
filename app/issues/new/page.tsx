@@ -9,9 +9,9 @@ import toast from "react-hot-toast";
 import {z} from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {createIssueSchema} from "@/app/validationSchemas";
-import ErrorMessage from "@/app/components/ErrorMessage";
 import React from "react";
-import Spinner from "@/app/components/Spinner";
+import {ErrorMessage, Spinner} from "@/app/components";
+
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
     ssr: false
