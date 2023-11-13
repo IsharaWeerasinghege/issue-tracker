@@ -1,6 +1,6 @@
 import React from 'react';
 import prisma from "@/prisma/client";
-import Link from "next/link";
+import Link from "@/app/components/Link";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import delay from "delay";
 import IssuesActions from "@/app/issues/IssuesActions";
