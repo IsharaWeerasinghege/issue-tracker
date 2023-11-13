@@ -33,7 +33,9 @@ const IssueDetails = async ({params}: Props) => {
                 <Text>{issue?.createdAt.toDateString()}</Text>
             </Flex>
             <Card className={'prose w-full'}>
-                <ReactMarkdown>{issue?.description}</ReactMarkdown>
+                <ReactMarkdown>
+                    {issue?.description || ''}
+                </ReactMarkdown>
             </Card>
         </div>
     );
