@@ -1,6 +1,6 @@
 'use client'
 import {Button, TextField} from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import {useForm, Controller} from "react-hook-form";
 import axios from "axios";
@@ -13,9 +13,15 @@ import ErrorMessage from "@/app/components/ErrorMessage";
 import React from "react";
 import Spinner from "@/app/components/Spinner";
 
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+    ssr: false
+});
+
+
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 function NewIssues() {
+
     const {register, handleSubmit, control, formState: {errors, isValid, isSubmitting}} = useForm<IssueForm>({
         resolver: zodResolver(createIssueSchema)
     });
@@ -29,9 +35,8 @@ function NewIssues() {
                 setTimeout(() => {
                     router.push('/issues');
                 }, 1000);
-            }).catch((err) => {
+            }).catch(() => {
                 toast.error('Failed to create issue');
-                console.log(err);
             });
     })
 
