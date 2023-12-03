@@ -12,7 +12,7 @@ function IssueDetails({issue}:{ issue: Issue }) {
                 <IssueStatusBadge status={issue?.status}/>
                 <Text>{issue?.createdAt.toDateString()}</Text>
             </Flex>
-            <Card className={'prose w-full'}>
+            <Card className={'prose max-w-full'}>
                 <ReactMarkdown>
                     {issue?.description || ''}
                 </ReactMarkdown>

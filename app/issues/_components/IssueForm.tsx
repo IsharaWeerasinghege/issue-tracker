@@ -20,14 +20,7 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
-interface Props {
-    issue : {
-        id?: string,
-        title?: string,
-        description?: string,
-    }
-}
-function IssueForm({issue}:{issue?: Props['issue']}) {
+function IssueForm({issue}: { issue: any }) {
 
     const {register, handleSubmit, control, formState: {errors, isValid, isSubmitting}} = useForm<IssueFormData>({
         resolver: zodResolver(issueSchema)
@@ -35,16 +28,21 @@ function IssueForm({issue}:{issue?: Props['issue']}) {
     const router = useRouter();
 
     const onSubmit = handleSubmit(async (data) => {
-        await axios.post('/api/issues', data)
-            .then(() => {
-                toast.success('Issue created successfully');
+        try {
+            if (issue?.id)
+                await axios.patch(`/api/issues/${issue.id}`, data)
+            else
+                await axios.post('/api/issues', data)
 
-                setTimeout(() => {
-                    router.push('/issues');
-                }, 1000);
-            }).catch(() => {
-                toast.error('Failed to create issue');
-            });
+            toast.success('Issue created successfully');
+
+            setTimeout(() => {
+                router.push('/issues');
+            }, 1000);
+
+        } catch (e: any) {
+            toast.error(e.response?.data?.message || 'Something went wrong');
+        }
     })
 
     // @ts-ignore
@@ -65,13 +63,13 @@ function IssueForm({issue}:{issue?: Props['issue']}) {
                 <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
                 <div className="flex items-center gap-2">
-                    <Button type={'submit'} disabled={!isValid || isSubmitting} className={'cursor-pointer'}>
-                        Create new issue
+                    <Button type={'submit'} disabled={!isValid || isSubmitting}
+                            className={'cursor-pointer bg-green-500 hover:bg-green-600'}>
+                        {issue?.id ? 'Update' : 'Create'}
                     </Button>
 
                     {isSubmitting && <Spinner/>}
                 </div>
-
             </form>
         </div>
     );
